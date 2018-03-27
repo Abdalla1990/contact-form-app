@@ -44,7 +44,6 @@
         "redux": "^3.7.2",
         "redux-persist": "^5.4.0",
         "sass-loader": "6.0.6",
-        "spotful-ui": "git+ssh://git@bitbucket.org/spotinteractive/spotful-ui.git#master",
         "style-loader": "0.18.2",
         "uglifyjs-webpack-plugin": "^1.2.3",
         "uuid": "3.1.0",
