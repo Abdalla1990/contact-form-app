@@ -1,0 +1,95 @@
+{
+    "title" : "Manifest Example, V 1.0.0",
+    "author": "Spotful Team",
+    "template": "https://path/to/app/index.html",
+    "version": "1.0.0",
+
+    "fields": [
+        {
+            "name": "section", 
+            "type": "section", 
+            "label": "Section Label",
+
+            "fields": [
+                {
+                    "name": "uniqueTextName",
+                    "type": "text", 
+                    "label": "Text Field Label",
+                    "placeholder": "Example Placeholder...",
+                    "min": "0", 
+                    "max": "140"
+                },
+                {
+                    "name": "uniqueRichTextName",
+                    "type": "richtext",
+                    "label": "Rich Text Field Label"
+                },
+                {
+                    "name": "uniqueEmailName",
+                    "type": "email",
+                    "label": "Email Field Label",
+                    "placeholder": "Example Placeholder..."
+                },
+                {
+                    "name": "uniqueImageName",
+                    "type": "image",
+                    "label": "Image Field Label"
+                },
+                {
+                    "name": "uniqueColorName",
+                    "type": "color",
+                    "default" : "#44FF22",
+                    "label": "Color Field Label"
+                },
+                {
+                    "name": "uniqueNumberName",
+                    "type": "number",
+                    "label": "Number Field Label",
+                    "min": "0",
+                    "max": "99999",
+                    "step": "0.1"
+                },
+                {
+                    "name": "uniqueRangeName",
+                    "type": "range",
+                    "label": "Range Field Label",
+                    "min": "0",
+                    "max": "99999",
+                    "step": "0.1"
+                },
+                {
+                    "name" : "uniqueDurationName",
+                    "type" : "duration",
+                    "label" : "Time frame",
+                    "default": {
+                        "start" : "2",
+                        "end" : "8"
+                    }
+                },
+                {
+                    "name": "uniqueBooleanName",
+                    "type": "boolean",
+                    "label": "Boolean Label"
+                }
+            ]
+        },
+        {
+            "name": "uniqueMultilistName",
+            "type": "list",
+            "label": "Multi-List Label",
+            "fields": [             
+
+                {
+                    "name": "uniqueTextName",
+                    "type": "text",
+                    "label": "Bacon Text",
+                    "placeholder": "Example Placeholder...",
+                    "min": "0",
+                    "max": "140"                  
+                }
+                
+               
+            ]
+        }
+    ]
+}

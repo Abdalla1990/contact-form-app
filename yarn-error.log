@@ -1,0 +1,104 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn add browser-sync-webpack-plugin
+
+PATH: 
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+Yarn version: 
+  1.5.1
+
+Node version: 
+  8.9.2
+
+Platform: 
+  darwin x64
+
+npm manifest: 
+  {
+      "name": "spotful-app-starter-react",
+      "version": "1.0.0",
+      "description": "",
+      "main": "index.js",
+      "scripts": {
+          "test": "echo \"Error: no test specified\" && exit 1",
+          "serve": "live-server public/",
+          "build:dev": "webpack",
+          "build:prod": "webpack -p --env production",
+          "dev-server": "webpack-dev-server",
+          "start": " node server/server.js",
+          "heroku-postbuild": "yarn run build:prod",
+          "demo": "npm run build:dev && npm run start",
+          "nodemon": "nodemon server/server.js"
+      },
+      "engines": {
+          "node": "v8.5.0"
+      },
+      "author": "",
+      "license": "ISC",
+      "dependencies": {
+          "axios": "^0.17.1",
+          "babel-cli": "6.24.1",
+          "babel-core": "6.25.0",
+          "babel-loader": "7.1.1",
+          "babel-plugin-transform-class-properties": "6.24.1",
+          "babel-preset-env": "1.5.2",
+          "babel-preset-react": "6.24.1",
+          "css-loader": "0.28.4",
+          "image-webpack-loader": "^3.4.2",
+          "jquery": "^3.2.1",
+          "live-server": "^1.2.0",
+          "lowdash": "^1.1.0",
+          "material-ui": "^0.20.0",
+          "modal": "^1.2.0",
+          "moment": "2.18.1",
+          "node-sass": "4.5.3",
+          "nodemon": "^1.17.1",
+          "normalize.css": "7.0.0",
+          "path": "^0.12.7",
+          "react": "^16.0.0",
+          "react-addons-shallow-compare": "15.6.0",
+          "react-burger-menu": "^2.2.3",
+          "react-custom-scrollbars": "^4.2.1",
+          "react-dates": "12.7.0",
+          "react-dom": "^16.0.0",
+          "react-google-maps": "^9.4.3",
+          "react-modal": "^2.2.2",
+          "react-redux": "5.0.5",
+          "react-router-dom": "4.2.2",
+          "react-sidebar": "^2.3.2",
+          "react-sidemenu": "^0.0.13",
+          "react-table": "^6.7.6",
+          "redux": "^3.7.2",
+          "redux-persist": "^5.4.0",
+          "sass-loader": "6.0.6",
+          "style-loader": "0.18.2",
+          "uuid": "3.1.0",
+          "webpack": "^3.1.0",
+          "webpack-dev-server": "2.5.1",
+          "yarn": "^1.5.1",
+          "spotful-ui": "git+ssh://git@bitbucket.org/spotinteractive/spotful-ui.git#apps-template"
+      },
+      "devDependencies": {
+          "babel-plugin-transform-object-rest-spread": "^6.26.0",
+          "copy-webpack-plugin": "^4.5.0"
+      }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: Found incompatible module
+      at new MessageError (/usr/local/lib/node_modules/yarn/lib/cli.js:186:110)
+      at Object.checkOne (/usr/local/lib/node_modules/yarn/lib/cli.js:62444:11)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:22773:75
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:98:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:116:14
+      at new Promise (<anonymous>)
+      at new F (/usr/local/lib/node_modules/yarn/lib/cli.js:23451:28)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:95:12
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:22777:27

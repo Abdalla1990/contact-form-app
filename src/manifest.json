@@ -1,0 +1,100 @@
+{
+    "title" : "spotful-contact-form-app",
+    "author": "Abdalla Ahmed",
+    "template" : "https://s3.amazonaws.com/spotful-apps/spotful-contact-form-app/0.0.2/index.html",
+    "app_version": "",
+    "manifest_version": "1.0",
+
+    "fields": [
+        {
+            "name" : "contactEmail",
+            "type" : "email",
+            "label" : "Contact email",
+            "description" : "Enter the email of the person to contact"
+        },
+        {
+            "name": "themeColor",
+            "type": "color",
+            "label": "Form theme color",
+            "default": "#000000"
+        },{
+            "name" : "thankYouMessage",
+            "type" : "text",
+            "label" : "Thank you message",
+            "description" : "Enter a thank you message to be displayed upon form submission",
+            "default":"Thank you for contacting us,your email has been received."
+        },{
+            "name" : "buttonText",
+            "type" : "text",
+            "label" : "Button text",
+            "default" : "send"
+        },
+        {
+            "name": "formFieldList",
+            "type": "list",
+            "label": "Form field list",
+            "fields" : [
+                {
+                    "name" : "textField",
+                    "label" : "Text field",
+                    "type" : "section",
+                    "fields" : [
+
+                        {   
+                            "label" : "Text label",
+                            "description" : "Label will also be used in the email",
+                            "name" : "labelField",
+                            "type" : "text"
+
+                        },
+                        {   
+                            "label" : "Enter text for the placeholder",
+                            "name" : "placeholderField",
+                            "type" : "text"
+
+                        },{
+                            "label" : "Required field",
+                            "name" : "required",
+                            "type" : "boolean",
+                            "default" : "false"
+                        }
+                    ]
+
+                },
+                {
+                    "name" : "textareaField",
+                    "label" : "Textarea",
+                    "type" : "section",
+                    "fields" : [
+
+                        {   
+                            "label" : "Text label",
+                            "description" : "Label will also be used in the email",
+                            "name" : "labelField",
+                            "type" : "text"
+                            
+
+                        },
+                        {   
+                            "label" : "Enter text for the placeholder",
+                            "name" : "placeholderField",
+                            "type" : "text"
+
+                        },
+                        {
+                            "label" : "Required field",
+                            "name" : "required",
+                            "type" : "boolean"
+                        }
+                    ]
+
+                },
+                {
+                    "name" : "richTextField",
+                    "label" : "Text block",
+                    "type" : "richtext"
+                }
+            ]                
+        }
+    ]
+}

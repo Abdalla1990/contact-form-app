@@ -1,0 +1,7 @@
+.demo{
+    overflow: hidden;
+   
+}
+.layout--editor__sidebar{
+    overflow-y: scroll;
+}

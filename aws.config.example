@@ -1,0 +1,8 @@
+module.exports = {
+    
+    accessKeyId: "*************",
+    secretAccessKey: "*****************",
+    region: "us-east-1" ,
+    ACL: "public",
+    bucket: "spotful-apps"       
+}
