@@ -2,7 +2,7 @@
     "name": "spotful-contact-form-app",
     "version": "0.0.2",
     "description": "A boilerplate for spotful apps developed in react",
-    "repository": "https://abdalla1990@bitbucket.org/spotinteractive/app-starter-react.git",
+    "repository": "https://github.com/Abdalla1990/contact-form-app.git",
     "main": "index.js",
     "scripts": {
         "build": "webpack ",
