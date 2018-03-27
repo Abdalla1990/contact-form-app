@@ -14090,14 +14090,14 @@ angular.module("modal/modal.tpl.html", []).run(["$templateCache", function($temp
   $templateCache.put("modal/modal.tpl.html",
     "<div class=\"editor-dialog -is-entering\">\n" +
     "    <div class=\"editor-dialog-content\">\n" +
-    "        <article class=\"popup--card__sm\">\n" +
+    "        <article class=\"popup--card__{{ size }}\">\n" +
     "            <div class=\"popup--card__close\" ng-click=\"cancel()\">\n" +
     "                <span class=\"spoticon icon-close\"></span>\n" +
     "            </div>\n" +
     "\n" +
-    "            <img ng-show=\"config.modalImage\"\n" +
-    "                 ng-srcset=\"/assets/img/modal-{{config.modalImage}}@2x.png 2x, /assets/img/modal-{{config.modalImage}}.png 1x\"\n" +
-    "                 ng-src=\"/assets/img/modal-{{config.modalImage}}.png\"\n" +
+    "            <img ng-show=\"image\"\n" +
+    "                 ng-srcset=\"/assets/img/modal-{{ image }}@2x.png 2x, /assets/img/modal-{{ image }}.png 1x\"\n" +
+    "                 ng-src=\"/assets/img/modal-{{ image }}.png\"\n" +
     "                 class=\"popup--card__img\">\n" +
     "\n" +
     "            <h3 class=\"popup--card__heading\">\n" +
@@ -14105,25 +14105,23 @@ angular.module("modal/modal.tpl.html", []).run(["$templateCache", function($temp
     "            </h3>\n" +
     "\n" +
     "            <div class=\"popup--card__message\">\n" +
-    "                {{ modalBody }}\n" +
+    "                <ng-transclude></ng-transclude>\n" +
     "            </div>\n" +
     "\n" +
     "            <div class=\"popup--card__actions\">\n" +
-    "                <button class=\"btn--clear__neutral\" ng-click=\"cancel()\" type=\"button\" ng-show=\"cancelText\" >\n" +
+    "                <button class=\"btn--clear__neutral\" ng-click=\"cancel()\" type=\"button\" ng-show=\"cancelText\">\n" +
     "                    {{ cancelText }}\n" +
     "                </button>\n" +
     "\n" +
-    "                <a ng-href=\"{{ modalSubmitLink }}\" ng-show=\"submitText\">\n" +
-    "                    <button ng-class=\"{\n" +
-    "                                      'btn--outline__danger' : modalType === 'danger',\n" +
-    "                                      'btn--outline__action' : modalType === 'neutral',\n" +
-    "                                      'btn--outline__action' : modalType === 'action'\n" +
-    "                                      }\"\n" +
-    "                            ng-click=\"submit()\"\n" +
-    "                            type=\"button\">\n" +
-    "                        {{ submitText }}\n" +
-    "                    </button>\n" +
-    "                </a>\n" +
+    "                <button ng-class=\"{\n" +
+    "                                  'btn--outline__danger' : type === 'danger',\n" +
+    "                                  'btn--outline__neutral' : type === 'neutral',\n" +
+    "                                  'btn--outline__action' : type === 'action'\n" +
+    "                                  }\"\n" +
+    "                        ng-click=\"submit()\"\n" +
+    "                        type=\"button\">\n" +
+    "                    {{ submitText }}\n" +
+    "                </button>\n" +
     "            </div>\n" +
     "        </article>\n" +
     "    </div>\n" +
@@ -16154,12 +16152,22 @@ angular
             restrict: 'E',
             templateUrl: 'modal/modal.tpl.html',
             scope: {
-                options: '<',
+                modal: '<',
+                headingText: '@',
+                image: '@',
+                type: '@',
+                cancelText: '@',
+                submitText: '@',
+                size: '@',
                 onSubmit: '&',
                 onCancel: '&'
             },
+            transclude: true,
             link: function ($scope, $elem, $attrs) {
-                
+
+                // Apply defaults
+                _applyDefaultOptions();
+
                 $scope.submit = function () {
                     $scope.onSubmit();
                 };
@@ -16167,6 +16175,32 @@ angular
                 $scope.cancel = function () {
                     $scope.onCancel();
                 };
+
+                /**
+                 * Apply the default options when unspecified.
+                 * 
+                 * @private
+                 */
+                function _applyDefaultOptions() {
+                    // defaults
+                    var defaults = {
+                        headingText: '',
+                        type: 'neutral',
+                        cancelText: 'Dismiss',
+                        submitText: 'OK',
+                        size: 'sm'
+                    };
+
+                    for (var k in defaults) {
+                        // if properties were specified in the attrs, apply them
+                        // otherwise, use the defaults
+                        if ($attrs[k] && $attrs[k].length) {
+                            $scope[k] = $attrs[k];
+                        } else {
+                            $scope[k] = defaults[k];
+                        }
+                    }
+                }
             }
         };
     }
@@ -16193,6 +16227,11 @@ angular
 
         /////////////
 
+        /**
+         * Clear the modals stack.
+         * 
+         * @public
+         */
         function clear() {
             //  This is a very important piece.  
             //  Angular watches break when the hashId of the variable changes 
@@ -16203,55 +16242,26 @@ angular
         /**
          * Show a popup item
          * 
-         * @param {Object} [config]  The configuration of the popup.
-         * @param {String} [config.modalType] The type of popup message. You have the choice between send, success, danger
-         * @param {String} [config.modalHeading] The text to put has header.
-         * @param {String} [config.modalDescription] The text to put in the body text
-         * @param {String} [config.modalImage] An image to inject in the popup.
-         * @param {String} [config.modalImage2x] A second image to inject in the popup.
-         * @param {String} [config.modalSubmitLink] A link to point to when popup hits submit.
-         * @param {String} [config.modalSubmit] The text to put in the submit button.
-         * @param {String} [config.modalCancel] The text to put in the cancel button.
-         * @param {String} [config.content] This field allows you to override the default popup to a custom popup. The content field, can contain any html and directives registered in your app. 
-         * @param {Object} [data] The data that is being passed in to the popup.
-         * @return {Object}        returns a promise pattern that will be resolved when the submit sequence will be invoked. 
+         * @public
+         * @return {Object} Deferred object that will be resolved when the submit sequence will be invoked. 
          */
-        function open(options) {
-            // catch undefined params
-            options = options || {};
+        function open() {
 
-            var defaults = {
-                showModalCloseControl: true,
-                content: '<default-popup></default-popup>'
-            };
-
-            // Apply defaults (when a property is not set)
-            for (var k in defaults) {
-                if (!options.hasOwnProperty(k)) {
-                    options[k] = defaults[k];
-                }
-            }
             // Our promise object to return
             var modal = $q.defer();
-            var modalLength = self.modals.push(modal);
-            var length = self.modals.length;
-
             
-            modal.promise.options = options;
+            // TODO: to be done
+
+            var modalLength = self.modals.push(modal);
             
             modal.promise
-                .then(function () {
-                
-                })
-                .catch(function () {
-                
-                })
                 .finally(function () {
                     var index = self.modals.indexOf(modal);
+
                     self.modals.splice(index, 1);
                 });
 
-            return modal.promise;
+            return modal;
         }
     }
 })();
