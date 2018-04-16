@@ -9,7 +9,6 @@ const port = process.env.PORT || 3000 ;
 app.use(express.static(publicPath));
 
 app.get('/',(req,res)=>{
-
     console.log('redirect', res)
     res.redirect('/demo');
 });
