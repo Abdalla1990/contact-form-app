@@ -13873,10 +13873,55 @@ angular.module('textAngularSetup', [])
     
     return rangy;
 }, this);
-angular.module("ui.spotful.tpl", ["alert/alert.tpl.html", "auto-update-input/auto-update-input.tpl.html", "color-field/color-field.tpl.html", "duration-field/duration-field.tpl.html", "editor-parser/list-parser.tpl.html", "editor-parser/section-parser.tpl.html", "email-field/email-field.tpl.html", "image-field/image-field.tpl.html", "loading-screen/loading-screen.tpl.html", "location-field/location-field.tpl.html", "modal/modal.tpl.html", "number-field/number-field.tpl.html", "option-field/option-field.tpl.html", "password-field/password-field.tpl.html", "popup/default-popup.tpl.html", "popup/editor-popup.tpl.html", "range-field/range-field.tpl.html", "richtext-field/richtext-field.tpl.html", "search-field/search-field.tpl.html", "search-link/search-link-item-vimeo.tpl.html", "search-link/search-link-item-youtube.tpl.html", "search-link/search-link.tpl.html", "select-field/select-field.tpl.html", "switch-field/switch-field.tpl.html", "text-field/text-field.tpl.html", "url-field/url-field.tpl.html"]);
+(function() {
+    'use strict';
 
-angular.module("alert/alert.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("alert/alert.tpl.html",
+    /**
+     * Alert module
+     *
+     * @author  The Spotful Team
+     * @since   2016/9/8
+     */
+    angular.module('ui.alert', []);
+})();
+
+/**
+ *
+ * This module provides all features necessary to parse a json object that describes the schema of editable templates into an editing interface.
+ * @namespace EditorParser
+ * @memberOf SpotfulUi
+ */
+angular.module('ui.editor-parser', []);
+
+/**
+ * Popup
+ */
+angular.module('ui.popup', []);
+
+angular.module('ui.popup').run(['$rootScope', 'PopupEditorManager', '$q', function($rootScope, PopupEditorManager, $q) {
+
+    $rootScope.$on("$routeChangeStart", function(event, next, current) {
+
+        //Clears all element in the stack;
+        PopupEditorManager.clear();
+    });
+
+
+}]);
+
+angular.module('ui.richtext', ['textAngular']);
+
+/**
+ * Spotful Ui Module
+ * @class  SpotfulUi
+ * 
+ */
+angular.module('ui', ['ui.editor-parser', 'ui.popup', 'ui.alert', 'ui.richtext']);
+
+angular.module('ui').run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('src/alert/partials/alerts.html',
     "<div class=\"notifier--container\">\n" +
     "\n" +
     "    <div class=\"notifier--alert__{{a.type}}\" ng-repeat=\"a in alerts\" ng-class=\"{ '-is--active' : a.show , '-is--inactive' : !a.show}\">\n" +
@@ -13892,12 +13937,11 @@ angular.module("alert/alert.tpl.html", []).run(["$templateCache", function($temp
     "	</div>\n" +
     "\n" +
     "</div>	\n" +
-    "\n" +
-    "");
-}]);
+    "\n"
+  );
 
-angular.module("auto-update-input/auto-update-input.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("auto-update-input/auto-update-input.tpl.html",
+
+  $templateCache.put('src/auto-update-input/partials/auto-update-input.html',
     "<div style=\"width:100%;\">\n" +
     "\n" +
     "    <input class=\"input--box\" type=\"text\" ng-model=\"ngModel\" ng-keyup=\"checkEndEdit($event)\" ng-focus=\"startEdit()\" ng-blur=\"endEdit()\" type=\"text\" tabindex=\"-1\">\n" +
@@ -13906,12 +13950,11 @@ angular.module("auto-update-input/auto-update-input.tpl.html", []).run(["$templa
     "        <img width=\"20\" ng-hide=\"status == 'inactive'\" ng-src=\"{{statusImage}}\"/>\n" +
     "    </div>\n" +
     "</div>\n" +
-    "\n" +
-    "");
-}]);
+    "\n"
+  );
 
-angular.module("color-field/color-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("color-field/color-field.tpl.html",
+
+  $templateCache.put('src/color-field/partials/color-field.html',
     "<div class=\"input--group\">\n" +
     "    \n" +
     "    <label class=\"label--primary\">\n" +
@@ -13925,12 +13968,11 @@ angular.module("color-field/color-field.tpl.html", []).run(["$templateCache", fu
     "\n" +
     "    <input class=\"input--box__color colorpicker\" size=\"8\" />\n" +
     "\n" +
-    "</div>\n" +
-    "");
-}]);
+    "</div>\n"
+  );
 
-angular.module("duration-field/duration-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("duration-field/duration-field.tpl.html",
+
+  $templateCache.put('src/duration-field/partials/duration-field.html',
     "<div class=\"input--group row\">\n" +
     "    <label class=\"label--primary\">\n" +
     "       \n" +
@@ -13945,11 +13987,12 @@ angular.module("duration-field/duration-field.tpl.html", []).run(["$templateCach
     "        <input class=\"input--editor\" type=\"number\" step=\"{{step}}\" min=\"{{data.start}}\" max=\"{{max}}\" placeholder=\"{{placeholder}}\" ng-model=\"data.end\">     \n" +
     "        <label class=\"label--secondary\">END</label>   \n" +
     "    </div>\n" +
-    "</div> ");
-}]);
+    "</div> "
+  );
 
-angular.module("editor-parser/list-parser.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("editor-parser/list-parser.tpl.html",
+
+  $templateCache.put('src/editor-parser/partials/list-parser.html',
+    "\n" +
     "<label class=\"label--section\">\n" +
     "    {{$ctrl.label}}\n" +
     "</label>\n" +
@@ -13960,22 +14003,26 @@ angular.module("editor-parser/list-parser.tpl.html", []).run(["$templateCache", 
     "\n" +
     "<section class=\"editor-panel--section\" ng-repeat=\"item in $ctrl.items\" ng-class=\"{'-is-removing' : item.stateRemoving, '-anim--item-shrink' : item.animRemove, '-anim--fadein' : !animRemove && !stateRemoving}\">\n" +
     "\n" +
-    "    <div spotful-dropdown>\n" +
+    "    <spotful-item-parser data=\"item.data\" schema=\"item.schema\" onupdate=\"$ctrl.updateItem(item, data)\">\n" +
+    "    </spotful-item-parser>\n" +
     "\n" +
+    "    <button class=\"badge--danger\" ng-click=\"$ctrl.removeItem(item)\">\n" +
+    "        <i class=\"spoticon icon-close\"></i>\n" +
+    "    </button>\n" +
+    "\n" +
+    "    <!-- <div spotful-dropdown>\n" +
+    "    \n" +
     "        <div class=\"editor-panel--menu__toggle\" title=\"Item Options\" spotful-dropdown-toggle>\n" +
-    "            <i class=\"icon icon-options\"></i>\n" +
+    "            <i class=\"spoticon icon-options\"></i>\n" +
     "        </div>\n" +
-    "\n" +
+    "    \n" +
     "        <ul class=\"settings--menu\" spotful-dropdown-target>\n" +
     "            <li class=\"settings--menu__item\" ng-click=\"$ctrl.removeItem(item)\" title=\"Remove this item\">\n" +
     "                Remove Item\n" +
     "            </li>\n" +
     "        </ul>\n" +
-    "        \n" +
-    "    </div>\n" +
-    "\n" +
-    "    <spotful-item-parser data=\"item.data\" schema=\"item.schema\" onupdate=\"$ctrl.updateItem(item, data)\" >\n" +
-    "    </spotful-item-parser>\n" +
+    "    \n" +
+    "    </div> -->\n" +
     "\n" +
     "</section>\n" +
     "\n" +
@@ -13996,34 +14043,44 @@ angular.module("editor-parser/list-parser.tpl.html", []).run(["$templateCache", 
     "\n" +
     "</button>\n" +
     "\n" +
-    "<button class=\"btn--outline__action btn-u--block btn-u--sm\"  ng-click=\"$ctrl.addItem($ctrl.lastSelectedOption)\" ng-if=\"$ctrl.hasOneItem\">\n" +
+    "<button class=\"btn--outline__action btn-u--block btn-u--sm mar-t_lg\" ng-click=\"$ctrl.addItem($ctrl.lastSelectedOption)\" ng-if=\"$ctrl.hasOneItem\">\n" +
     "    + {{$ctrl.lastSelectedOption.label}}\n" +
     "</button>\n" +
     "\n" +
-    "\n" +
-    "");
-}]);
+    "\n"
+  );
 
-angular.module("editor-parser/section-parser.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("editor-parser/section-parser.tpl.html",
-    "<section class=\"editor-panel--section\">\n" +
-    "   \n" +
-    "    <label ng-if=\"$ctrl.label\" class=\"label--section\">\n" +
-    "        {{$ctrl.label}}\n" +
-    "    </label>\n" +
-    "\n" +
-    "    <label class=\"label--meta\" ng-if=\"$ctrl.description\">\n" +
-    "        {{$ctrl.description}}\n" +
-    "    </label>\n" +
-    "\n" +
-    "    <spotful-item-parser ng-repeat=\"item in $ctrl.items\" schema=\"item\" data=\"$ctrl.data[item.name]\" onupdate=\"$ctrl.updateItem(item, data)\" > </spotful-item-parser>\n" +
-    "\n" +
-    "</section>\n" +
-    "");
-}]);
 
-angular.module("email-field/email-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("email-field/email-field.tpl.html",
+  $templateCache.put('src/editor-parser/partials/section-parser.html',
+    "<section class=\"editor-section-full\" ng-class=\"{ '-is-open' : $ctrl.showSection, '-collapsible' : $ctrl.collapsible }\">\n" +
+    "\n" +
+    "    <div class=\"row editor-section-header\" ng-if=\"$ctrl.collapsible\" ng-click=\"$ctrl.toggleSection()\">\n" +
+    "       \n" +
+    "        <div class=\"img--thumb__sm\">\n" +
+    "            <div class=\"editor-section-avatar\" ng-show=\"!$ctrl.section.sectionThumbnail\">{{$ctrl.initials}}</div>\n" +
+    "            <img ng-src=\"{{$ctrl.section.sectionThumbnail}}\" ng-show=\"$ctrl.section.sectionThumbnail\">\n" +
+    "        </div> \n" +
+    "        \n" +
+    "        <label class=\"editor-section-header-label\">\n" +
+    "            {{$ctrl.section.sectionLabel}}\n" +
+    "        </label> \n" +
+    "\n" +
+    "        <i class=\"spoticon icon-angle-down\"></i>\n" +
+    "\n" +
+    "    </div>\n" +
+    "    \n" +
+    "    <div class=\"editor-section-body\">\n" +
+    "        <label class=\"label--section\" ng-if=\"$ctrl.label\">\n" +
+    "            {{$ctrl.label}}\n" +
+    "        </label>\n" +
+    "        <spotful-item-parser ng-repeat=\"item in $ctrl.items\" schema=\"item\" data=\"$ctrl.data[item.name]\" onupdate=\"$ctrl.updateItem(item, data)\"></spotful-item-parser>\n" +
+    "    </div>\n" +
+    "    \n" +
+    "</section>\n"
+  );
+
+
+  $templateCache.put('src/email-field/partials/email-field.html',
     "<div class=\"input--group\">\n" +
     "    \n" +
     "    <label class=\"label--primary\" ng-if=\"label\">\n" +
@@ -14036,24 +14093,30 @@ angular.module("email-field/email-field.tpl.html", []).run(["$templateCache", fu
     "\n" +
     "    <input type=\"text\" class=\"input--editor\" ng-model-options=\"{ debounce: 200 }\" placeholder=\"{{placeholder}}\" ng-model=\"data\" />\n" +
     "\n" +
-    "</div>");
-}]);
+    "</div>"
+  );
 
-angular.module("image-field/image-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("image-field/image-field.tpl.html",
+
+  $templateCache.put('src/image-field/partials/image-field-partial.html',
     "<div>\n" +
     "\n" +
     "    <label>{{$ctrl.label}}</label>\n" +
     "\n" +
-    "    {{$ctrl.data}}\n" +
+    "    <!-- {{$ctrl.data}} -->\n" +
     "\n" +
-    "     <input type=\"file\" id=\"file\"  ng-model=\"$ctrl.data\"/>\n" +
-    "\n" +
-    " </div>");
-}]);
+    "     <!-- <input type=\"file\" id=\"file\"  ng-model=\"$ctrl.data.src\"/> -->\n" +
+    "     \n" +
+    "    <input class=\"input--editor\" type=\"text\" id =\"file\"  ng-model=\"$ctrl.data.src\" placeholder=\"Enter image url\"/>\n" +
+    " </div>"
+  );
 
-angular.module("loading-screen/loading-screen.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("loading-screen/loading-screen.tpl.html",
+
+  $templateCache.put('src/json-field/partials/json-field.html',
+    "<textarea></textarea>"
+  );
+
+
+  $templateCache.put('src/loading-screen/loading-screen.html',
     "<div class=\"loading-screen\" ng-class=\"{'-is--active' : !stateLoaded, '-is--inactive' :  stateLoaded}\">\n" +
     "\n" +
     "    <div class=\"loading-screen--content\">\n" +
@@ -14065,11 +14128,11 @@ angular.module("loading-screen/loading-screen.tpl.html", []).run(["$templateCach
     "        </div>\n" +
     "    </div>\n" +
     "\n" +
-    "</div>");
-}]);
+    "</div>"
+  );
 
-angular.module("location-field/location-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("location-field/location-field.tpl.html",
+
+  $templateCache.put('src/location-field/partials/location-field.html',
     "<section class=\"editor-panel--section\">\n" +
     "\n" +
     "    <div class=\"input--group\">\n" +
@@ -14083,54 +14146,11 @@ angular.module("location-field/location-field.tpl.html", []).run(["$templateCach
     "\n" +
     "    <div id=\"placeservice-init\"></div>\n" +
     "\n" +
-    "</section>");
-}]);
+    "</section>"
+  );
 
-angular.module("modal/modal.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("modal/modal.tpl.html",
-    "<div class=\"editor-dialog -is-entering\">\n" +
-    "    <div class=\"editor-dialog-content\">\n" +
-    "        <article class=\"popup--card__{{ size }}\">\n" +
-    "            <div class=\"popup--card__close\" ng-click=\"cancel()\">\n" +
-    "                <span class=\"spoticon icon-close\"></span>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <img ng-show=\"image\"\n" +
-    "                 ng-srcset=\"/assets/img/modal-{{ image }}@2x.png 2x, /assets/img/modal-{{ image }}.png 1x\"\n" +
-    "                 ng-src=\"/assets/img/modal-{{ image }}.png\"\n" +
-    "                 class=\"popup--card__img\">\n" +
-    "\n" +
-    "            <h3 class=\"popup--card__heading\">\n" +
-    "                {{ headingText }}\n" +
-    "            </h3>\n" +
-    "\n" +
-    "            <div class=\"popup--card__message\">\n" +
-    "                <ng-transclude></ng-transclude>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <div class=\"popup--card__actions\">\n" +
-    "                <button class=\"btn--clear__neutral\" ng-click=\"cancel()\" type=\"button\" ng-show=\"cancelText\">\n" +
-    "                    {{ cancelText }}\n" +
-    "                </button>\n" +
-    "\n" +
-    "                <button ng-class=\"{\n" +
-    "                                  'btn--outline__danger' : type === 'danger',\n" +
-    "                                  'btn--outline__neutral' : type === 'neutral',\n" +
-    "                                  'btn--outline__action' : type === 'action'\n" +
-    "                                  }\"\n" +
-    "                        ng-click=\"submit()\"\n" +
-    "                        type=\"button\">\n" +
-    "                    {{ submitText }}\n" +
-    "                </button>\n" +
-    "            </div>\n" +
-    "        </article>\n" +
-    "    </div>\n" +
-    "</div>\n" +
-    "");
-}]);
 
-angular.module("number-field/number-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("number-field/number-field.tpl.html",
+  $templateCache.put('src/number-field/partials/number-field.html',
     "<div class=\"input--group\">\n" +
     "    \n" +
     "    <label class=\"label--primary\">\n" +
@@ -14143,11 +14163,11 @@ angular.module("number-field/number-field.tpl.html", []).run(["$templateCache", 
     "    \n" +
     "    <input type=\"number\" class=\"input--editor\" placeholder=\"{{placeholder}}\" ng-model=\"data\" step=\"{{step}}\" min=\"{{min}}\" max=\"{{max}}\">\n" +
     "\n" +
-    "</div>");
-}]);
+    "</div>"
+  );
 
-angular.module("option-field/option-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("option-field/option-field.tpl.html",
+
+  $templateCache.put('src/option-field/partials/option-field.html',
     "<div class=\"input--group\">\n" +
     "    \n" +
     "    <label class=\"label--primary\">\n" +
@@ -14171,11 +14191,11 @@ angular.module("option-field/option-field.tpl.html", []).run(["$templateCache", 
     "            </div>\n" +
     "\n" +
     "        </label>\n" +
-    "</div>");
-}]);
+    "</div>"
+  );
 
-angular.module("password-field/password-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("password-field/password-field.tpl.html",
+
+  $templateCache.put('src/password-field/partials/password-field.html',
     "<div class=\"input--group\">\n" +
     "    \n" +
     "    <label class=\"label--primary\">\n" +
@@ -14183,11 +14203,11 @@ angular.module("password-field/password-field.tpl.html", []).run(["$templateCach
     "    </label>\n" +
     "    <input type=\"password\" class=\"input--editor\" placeholder=\"\" name=\"\" ng-model=\"\">\n" +
     "\n" +
-    "</div>");
-}]);
+    "</div>"
+  );
 
-angular.module("popup/default-popup.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("popup/default-popup.tpl.html",
+
+  $templateCache.put('src/popup/partials/default-popup.html',
     "<article class=\"popup--card__sm\">\n" +
     "\n" +
     "	<div class=\"popup--card__close\" ng-click=\"cancel()\" ng-show=\"config.showModalCloseControl\">\n" +
@@ -14218,12 +14238,11 @@ angular.module("popup/default-popup.tpl.html", []).run(["$templateCache", functi
     "\n" +
     "	</div>\n" +
     "\n" +
-    "</article>\n" +
-    "");
-}]);
+    "</article>\n"
+  );
 
-angular.module("popup/editor-popup.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("popup/editor-popup.tpl.html",
+
+  $templateCache.put('src/popup/partials/editor-popup.html',
     "<div ng-repeat=\"popupeditoritem in popupeditoritems\">\n" +
     "	<div class=\"editor-dialog\" ng-class=\"{ '-is-entering' : popupeditoritem }\">\n" +
     "		<div class=\"editor-dialog-content\">\n" +
@@ -14231,12 +14250,19 @@ angular.module("popup/editor-popup.tpl.html", []).run(["$templateCache", functio
     "		</div>\n" +
     "	</div>\n" +
     "</div>\n" +
-    "\n" +
-    "");
-}]);
+    "\n"
+  );
 
-angular.module("range-field/range-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("range-field/range-field.tpl.html",
+
+  $templateCache.put('src/popup/partials/slide-popup.html',
+    "<div class=\"slide-dialog--content\" ng-show=\"show\" ng-model-options=\"{ debounce: 250 }\">\n" +
+    "    \n" +
+    "</div>\n" +
+    "\n"
+  );
+
+
+  $templateCache.put('src/range-field/partials/range-field.html',
     "<div class=\"input--group\">\n" +
     "\n" +
     "    <label class=\"label--primary\">\n" +
@@ -14258,11 +14284,11 @@ angular.module("range-field/range-field.tpl.html", []).run(["$templateCache", fu
     "        <input class=\"input--editor__sm\" type=\"number\" ng-model=\"data\" ng-model-options=\"{debounce: 250}\" ng-change=\"updateData()\" min=\"{{min}}\" max=\"{{max}}\">\n" +
     "\n" +
     "    </div>\n" +
-    "</div>");
-}]);
+    "</div>"
+  );
 
-angular.module("richtext-field/richtext-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("richtext-field/richtext-field.tpl.html",
+
+  $templateCache.put('src/richtext-field/partials/richtext-field.html',
     "<div class=\"input--group\">\n" +
     "    \n" +
     "    <label class=\"label--primary\">\n" +
@@ -14274,11 +14300,11 @@ angular.module("richtext-field/richtext-field.tpl.html", []).run(["$templateCach
     "\n" +
     "    <div class=\"richtext--editor\" text-angular=\"text-angular\" ta-toolbar=\"[['h1','h2', 'p','bold','italics','ul','ol','quote','insertImage','insertLink','justifyLeft','justifyCenter','html']]\" ng-model=\"dataHtml\" placeholder=\"{{placeholder}}\"></div>\n" +
     "\n" +
-    "</div>  ");
-}]);
+    "</div>  "
+  );
 
-angular.module("search-field/search-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("search-field/search-field.tpl.html",
+
+  $templateCache.put('src/search-field/partials/search-field.html',
     "<div class=\"input--group\">\n" +
     "    <label class=\"label--input\">\n" +
     "        {{label}}\n" +
@@ -14288,7 +14314,7 @@ angular.module("search-field/search-field.tpl.html", []).run(["$templateCache", 
     "    </label>\n" +
     "    <div class=\"input--group\">\n" +
     "        <input class=\"input--editor\" ng-class=\"{ '-is-loading' : stateLoading }\" ng-modal-options=\"{debounce: 500}\" placeholder=\" {{placeholder}}\" ng-model=\"searchField\" type=\"search\">\n" +
-    "        <i class=\"icon icon-search\"></i>\n" +
+    "        <i class=\"spoticon icon-search\"></i>\n" +
     "        <ul class=\"input--dropdown__box\" ng-class=\"{ '-is--active' : hasResults }\">\n" +
     "            <li class=\"input--dropdown__item\" ng-repeat=\"item in results\" ng-click=\"selectItem(item)\">\n" +
     "                <figure class=\"list--media__img img--thumb__sm\">\n" +
@@ -14298,42 +14324,41 @@ angular.module("search-field/search-field.tpl.html", []).run(["$templateCache", 
     "            </li>\n" +
     "        </ul>\n" +
     "    </div>\n" +
-    "</div>");
-}]);
+    "</div>"
+  );
 
-angular.module("search-link/search-link-item-vimeo.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("search-link/search-link-item-vimeo.tpl.html",
+
+  $templateCache.put('src/search-link/partials/search-link-item-vimeo.html',
     "<div class=\"badge-xs left mar-r_sm\">\n" +
     "	<img ng-src=\"{{link.data.thumbnail_url}}\"/>\n" +
     "</div>\n" +
     "<div class=\"left col-10\">\n" +
     "	<div class=\"truncate\">{{link.name}}</div>\n" +
     "	<div class=\"text-sm text-color -gray truncate\">{{link.url}}</div>\n" +
-    "</div>");
-}]);
+    "</div>"
+  );
 
-angular.module("search-link/search-link-item-youtube.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("search-link/search-link-item-youtube.tpl.html",
+
+  $templateCache.put('src/search-link/partials/search-link-item-youtube.html',
     "<div class=\"badge-xs left mar-r_sm\">\n" +
     "	<img ng-src=\"{{link.thumbnail}}\"/>\n" +
     "</div>\n" +
     "<div class=\"left col-10\">\n" +
     "	<div class=\"truncate\">{{link.name}}</div>\n" +
     "	<div class=\"text-sm text-color -gray truncate\">{{link.url}}</div>\n" +
-    "</div>");
-}]);
+    "</div>"
+  );
 
-angular.module("search-link/search-link.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("search-link/search-link.tpl.html",
-    "]<input class=\"input--editor\" ng-change=\"parseLink()\" placeholder=\"Add URL here\" type=\"text\" name=\"Link url\" ng-model=\"searchLinkField\" autofocus/>\n" +
-    "\n" +
-    "\n" +
-    "\n" +
-    "");
-}]);
 
-angular.module("select-field/select-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("select-field/select-field.tpl.html",
+  $templateCache.put('src/search-link/partials/search-link.html',
+    "<input class=\"input--editor\" ng-change=\"parseLink()\" placeholder=\"Add URL here\" type=\"text\" name=\"Link url\" ng-model=\"searchLinkField\" autofocus/>\n" +
+    "\n" +
+    "\n" +
+    "\n"
+  );
+
+
+  $templateCache.put('src/select-field/partials/select-field.html',
     "<div class=\"input--group\">\n" +
     "    <label class=\"label--primary\">\n" +
     "        {{label}}\n" +
@@ -14348,19 +14373,18 @@ angular.module("select-field/select-field.tpl.html", []).run(["$templateCache", 
     "            <option value=\"{{option.value}}\" ng-repeat=\"option in options\">{{option.label}}</option>\n" +
     "    	</select>\n" +
     "    \n" +
-    "    	<span class=\"icon icon-angle-down\"></span>\n" +
+    "    	<i class=\"spoticon icon-angle-down\"></i>\n" +
     "    \n" +
     "    </div>\n" +
     "</div>\n" +
     "\n" +
     "\n" +
     "\n" +
-    "\n" +
-    "");
-}]);
+    "\n"
+  );
 
-angular.module("switch-field/switch-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("switch-field/switch-field.tpl.html",
+
+  $templateCache.put('src/switch-field/partials/switch-field.html',
     "<div class=\"input--group\">\n" +
     "\n" +
     "    <label class=\"label--primary\">\n" +
@@ -14389,12 +14413,11 @@ angular.module("switch-field/switch-field.tpl.html", []).run(["$templateCache", 
     "    </label>\n" +
     "\n" +
     "</div>\n" +
-    "   \n" +
-    "");
-}]);
+    "   \n"
+  );
 
-angular.module("text-field/text-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("text-field/text-field.tpl.html",
+
+  $templateCache.put('src/text-field/partials/text-field.html',
     "<div class=\"input--group\">\n" +
     "    \n" +
     "    <label class=\"label--primary\">\n" +
@@ -14407,11 +14430,11 @@ angular.module("text-field/text-field.tpl.html", []).run(["$templateCache", func
     "\n" +
     "    <input type=\"text\" ng-model-options=\"{ debounce: 250 }\" class=\"input--editor\" placeholder=\"{{placeholder}}\" name=\"{{name}}\" ng-model=\"data\" value=\"{{default}}}\">\n" +
     "\n" +
-    "</div>");
-}]);
+    "</div>"
+  );
 
-angular.module("url-field/url-field.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("url-field/url-field.tpl.html",
+
+  $templateCache.put('src/url-field/partials/url-field.html',
     "<div class=\"input--group\">\n" +
     "    \n" +
     "    <label class=\"label--primary\">\n" +
@@ -14419,134 +14442,21 @@ angular.module("url-field/url-field.tpl.html", []).run(["$templateCache", functi
     "    </label>\n" +
     "    <input type=\"url\" class=\"input--editor\" placeholder=\"{{placeholder}}\" ng-model=\"data\" ng-model-options=\"{ debounce: 250 }\">\n" +
     "\n" +
-    "</div>");
-}]);
-
-(function() {
-    'use strict';
-
-    /**
-     * Alert module
-     *
-     * @author  The Spotful Team
-     * @since   2016/9/8
-     */
-    angular.module('ui.spotful.alert', [
-        'alert/alert.tpl.html'
-    ]);
-})();
-
-(function () {
-    'use strict';
-
-    angular.module('ui.spotful.colorField', [
-        'color-field/color-field.tpl.html'
-    ]);
-})();
-(function () {
-    'use strict';
-
-/**
- *
- * This module provides all features necessary to parse a json object that describes the schema of editable templates into an editing interface.
- * @namespace EditorParser
- * @memberOf SpotfulUi
- */
-angular.module('ui.spotful.editorParser', [
-    'editor-parser/list-parser.tpl.html',
-    'editor-parser/section-parser.tpl.html'
-]);
-
-})();
-/**
- * Popup
- */
-angular.module('ui.spotful.modal', [
-    'modal/modal.tpl.html'
-]);
-
-angular.module('ui.spotful.modal').run(['$rootScope', 'ModalService', '$q', function($rootScope, ModalService, $q) {
-
-    $rootScope.$on("$routeChangeStart", function(event, next, current) {
-
-        //Clears all element in the stack;
-        ModalService.clear();
-    });
-
+    "</div>"
+  );
 
 }]);
 
-/**
- * Popup
- */
-angular.module('ui.spotful.popup', [
-    'popup/editor-popup.tpl.html',
-    'popup/default-popup.tpl.html'
-]);
-
-angular.module('ui.spotful.popup').run(['$rootScope', 'PopupEditorManager', '$q', function($rootScope, PopupEditorManager, $q) {
-
-    $rootScope.$on("$routeChangeStart", function(event, next, current) {
-
-        //Clears all element in the stack;
-        PopupEditorManager.clear();
-    });
-
-
-}]);
-
-(function () {
-    'use strict';
-    
-    angular.module('ui.spotful.rangeField', [
-        'range-field/range-field.tpl.html'
-    ]);
-})();
-(function () {
-    'use strict';
-    
-    angular.module('ui.spotful.richtext', [
-        'textAngular',
-        'richtext-field/richtext-field.tpl.html'
-    ]);
-})();
-
-(function () {
-    'use strict';
-    
-    angular.module('ui.spotful.searchField', [
-        'search-field/search-field.tpl.html'
-    ]);
-})();
-/**
- * Spotful Ui Module
- * @class  SpotfulUi
- * 
- */
-angular.module('ui.spotful', [
-    'ui.spotful.tpl',
-    'ui.spotful.alert',
-    'ui.spotful.colorField',
-    'ui.spotful.editorParser', 
-    'ui.spotful.modal',
-    'ui.spotful.rangeField',
-    'ui.spotful.richtext',
-    'ui.spotful.searchField'
-]);
-
-(function () {
 /**
  * @memberof SpotfulUi 
  * @name Alerts directive
  *
  * @ngdoc directive
  */
-angular
-    .module('ui.spotful.alert')
-    .directive('spotfulAlerts', ['$timeout', 'AlertService', function($timeout, AlertService) {
+angular.module('ui.alert').directive('spotfulAlerts', ['$compile', 'AlertService', '$timeout', function($compile, AlertService, $timeout) {
     return {
         restrict: 'E',
-        templateUrl: 'alert/alert.tpl.html',
+        templateUrl: 'src/alert/partials/alerts.html',
 
         scope: {},
 
@@ -14624,10 +14534,6 @@ angular
         }
     }
 }]);
-})();
-
-(function () {
-    'use strict';
 
 /**
  * @memberof SpotfulUi 
@@ -14635,9 +14541,7 @@ angular
  * @author  The Spotful Team
  * @since   2016/9/8
  */
-angular
-    .module('ui.spotful.alert')
-    .service('AlertService', [function() {
+angular.module('ui.alert').service('AlertService', [function() {
 
     // Store this reference.
     var self = this;
@@ -14704,10 +14608,6 @@ angular
         return alert;
     };
 }]);
-})();
-
-(function () {
-    'use strict';
 
 /**
  * AutoUpdateInput
@@ -14718,14 +14618,12 @@ angular
  * @param on-update handles the function to fire when an update is invoked. If you want to track the status of your query simply return que $q promise pattern to your function. The directives will rely on those to monitor the status of the query.
  * @param ngModel handles the value bound to it. (exactly like ng-model already behaves.)
  */
-angular
-    .module('ui.spotful')
-    .directive('autoUpdateInput', [function() {
+angular.module('ui').directive('autoUpdateInput', ['$timeout', function($timeout) {
 
     return {
         restrict: 'E',
         replace: true,
-        templateUrl: 'auto-update-input/auto-update-input.tpl.html',
+        templateUrl: 'src/auto-update-input/partials/auto-update-input.html',
 
         scope: {
             onUpdate: "&",
@@ -14808,11 +14706,7 @@ angular
 
         }
     }
-}]);  
-})();
-
-(function () {
-    'use strict';
+}]);
 
 /**
  * Allows you to pick colors from an interactive color picker pallette.  American colors.  Huge colors.  The greatest colors.  I suppose it lets you pick any colour, however.  
@@ -14829,12 +14723,10 @@ angular
  * @ngdoc directive
  */
 
-angular
-    .module('ui.spotful.colorField')
-    .directive('spotfulColorField', [function() {
+angular.module('ui').directive('spotfulColorField', ['$timeout', function($timeout) {
     return {
         restrict: 'E',
-        templateUrl: 'color-field/color-field.tpl.html',
+        templateUrl: 'src/color-field/partials/color-field.html',
 
         scope: {
 
@@ -14848,7 +14740,7 @@ angular
         link: function(scope, element, attr) {
 
             var color = '';
-            var $colorpicker_field = element.find('.colorpicker');
+            var colorpicker_field = element.find('.colorpicker');
 
             //We check if there is a default value.
             if(scope.data == undefined && scope.default != undefined) {
@@ -14868,7 +14760,7 @@ angular
 
             }
 
-            $colorpicker_field.minicolors({
+            colorpicker_field.minicolors({
                 changeDelay: 0,
                 defaultValue: color,
                 change: function(hex, opacity) {
@@ -14898,18 +14790,15 @@ angular
                 //We set the local color reference.
                 color = scope.data;
 
-                $colorpicker_field.minicolors('value', {
+                colorpicker_field.minicolors('value', {
                     color: color
                 });
 
             });
 
         }
-    };
+    }
 }]);
-})();
-(function () {
-    'use strict';
 
 /**
  * Rolls down a menu interface. 
@@ -14917,7 +14806,7 @@ angular
  * @name  Dropdown Menu
  * @ngdoc directive
  */
-angular.module('ui.spotful').directive('spotfulDropdown', ['$timeout', function($timeout) {
+angular.module('ui').directive('spotfulDropdown', ['$timeout', function($timeout) {
     return {
 
         restrict: 'A',
@@ -14953,14 +14842,10 @@ angular.module('ui.spotful').directive('spotfulDropdown', ['$timeout', function(
         }
 
     };
-}]);
-})();
-(function () {
-    'use strict';
 
-angular
-    .module('ui.spotful')
-    .directive('spotfulDurationField', [function() {
+}]);
+
+angular.module('ui').directive('spotfulDurationField', [function() {
 
     return {
         restrict: 'E',
@@ -14981,7 +14866,7 @@ angular
             onupdate: "&"
         },
 
-        templateUrl: 'duration-field/duration-field.tpl.html',
+        templateUrl: 'src/duration-field/partials/duration-field.html',
 
         link: function(scope, element, attr) {
 
@@ -15029,9 +14914,7 @@ angular
     };
 
 }]);
-})();
-(function () {
-    'use strict';
+
 /**
  * The item parser provides dynamcity in the system. This item behaves as a wrapper on each 
  * item of the template to inject the appropriate item according to its type.
@@ -15041,13 +14924,10 @@ angular
  * @ngdoc directive
  * @example <spotful-item-parser data="data" schema="schema" onupdate="parentUpdateItem(itemKey, data)"></spotful-item-parser>
  */
-angular
-    .module('ui.spotful.editorParser')
-    .directive('spotfulItemParser', ['$compile', 'SpotfulEditorParser', function($compile, SpotfulEditorParser) {
+angular.module('ui.editor-parser').directive('spotfulItemParser', ['$compile', 'SpotfulEditorParser', function($compile, SpotfulEditorParser) {
     return {
 
         restrict: 'E',
-        replace: true,
 
         scope: {
             data: "<",
@@ -15073,7 +14953,7 @@ angular
 
                 var compile = function() {
 
-                    if($scope.schema == undefined) {
+                    if ( $scope.schema == undefined ) {
 
                         return;
                     }
@@ -15136,7 +15016,7 @@ angular
 
                     }
 
-                };
+                }
 
                 /**
                  * Accessor method for updating item. This method takes care of ditributing the data to the parent context by maintaining its key.
@@ -15152,32 +15032,14 @@ angular
                         data: data
                     });
 
-                };
+                }
+
             }
-        }
+
+        },
+
     };
 }]);
-})();
-
-(function () {
-    'use strict';
-
-angular
-    .module('ui.spotful.editorParser')
-    .component('spotfulListParser', {
-
-    templateUrl: 'editor-parser/list-parser.tpl.html',
-    controller: SpotfulListParserController,
-    bindings: {
-
-        data: "<",
-        schema: "<",
-        onupdate: "&",
-        label : "@",
-        description : "@"
-
-    }
-});
 
 /**
  * @class SpotfulList
@@ -15207,9 +15069,9 @@ angular
  */
 
 SpotfulListParserController.$inject = [
-    '$log',
-    '$scope'
-];
+'$log',
+'$scope'
+]
 
 function SpotfulListParserController($log, $scope) {
 
@@ -15232,6 +15094,8 @@ function SpotfulListParserController($log, $scope) {
     ctrl.description = '';
 
     ctrl.$onChanges = function(changes) {
+
+
         if (changes.schema != undefined) {
 
             ctrl.itemsOptions = ctrl.schema.fields;
@@ -15248,7 +15112,8 @@ function SpotfulListParserController($log, $scope) {
                 ctrl.hasOneItem = true;
 
             }
-        };
+
+        }
 
         if (changes.data != undefined) {
 
@@ -15288,12 +15153,17 @@ function SpotfulListParserController($log, $scope) {
 
 
     ctrl.generateUniqueId = function () {
+
+
         return Math.floor(Math.random()*100000000000000);
-    };
+
+    }
 
     ctrl.setLastSelectedItemOption = function (itemOption) {
+
         ctrl.lastSelectedOption = itemOption;
-    };
+
+    }
 
     /**
      * Finds the corresponding item schema according to the name provided.
@@ -15310,7 +15180,7 @@ function SpotfulListParserController($log, $scope) {
                 return ctrl.itemsOptions[i];
             }
         }
-    };
+    }
 
     /**
      * Adds an new item to the list.
@@ -15326,6 +15196,8 @@ function SpotfulListParserController($log, $scope) {
             schema : angular.copy(itemStructure)
 
         };
+
+        console.log(item.schema);
 
         //We set the last selected item to the current selected item option
         ctrl.setLastSelectedItemOption(itemStructure);
@@ -15349,7 +15221,9 @@ function SpotfulListParserController($log, $scope) {
         }
 
         ctrl.items.push(item);
-    };
+        
+
+    }
 
     var generatePayload = function(schema, data) {
 
@@ -15381,11 +15255,12 @@ function SpotfulListParserController($log, $scope) {
 
             } 
         }
-    };
+
+    }
 
     ctrl.getItem = function (id) {
 
-        for (var i in ctrl.items) {
+        for(var i in ctrl.items) {
 
             if(ctrl.items[i].id == id) {
 
@@ -15393,7 +15268,7 @@ function SpotfulListParserController($log, $scope) {
 
             } 
         }
-    };
+    }
 
     ctrl.removeItem = function(item) {
 
@@ -15420,9 +15295,14 @@ function SpotfulListParserController($log, $scope) {
             $scope.$digest();
 
         }, 350);
-    };
+
+    }
 
     ctrl.updateItem = function(schema, data) {
+
+
+        console.log(schema, data);
+
         if(schema == undefined || data == undefined) {
 
             return;
@@ -15451,12 +15331,14 @@ function SpotfulListParserController($log, $scope) {
                     ctrl.items[i].data = item.data;
 
                 }
+               
             } 
         }
 
 
         ctrl.update();
-    };
+
+    }
 
     ctrl.update = function () {
 
@@ -15476,24 +15358,24 @@ function SpotfulListParserController($log, $scope) {
         ctrl.onupdate({
             'data': formatedData
         });
-    };
-}
-})();
-(function () {
-    'use strict';
 
-angular
-    .module('ui.spotful.editorParser')
-    .component('spotfulSectionParser', {
-        templateUrl: 'editor-parser/section-parser.tpl.html',
-        controller: ['$log', SpotfulSectionParserController],
-        bindings: {
-            data: "<",
-            schema: "<",
-            onupdate: "&",
-            label : "@",
-            description : "@"
-        }
+    }
+
+}
+
+angular.module('ui.editor-parser').component('spotfulListParser', {
+
+    templateUrl: 'src/editor-parser/partials/list-parser.html',
+    controller: SpotfulListParserController,
+    bindings: {
+
+        data: "<",
+        schema: "<",
+        onupdate: "&",
+        label : "@",
+        description : "@"
+
+    }
 });
 
 /**
@@ -15527,17 +15409,33 @@ angular
  * @ngdoc component
  * @memberof EditorParser
  */
-SpotfulSectionParserController.$inject = ['$log'];
 
-function SpotfulSectionParserController($log) {
+angular.module('ui.editor-parser').component('spotfulSectionParser', {
+    
+    templateUrl: 'src/editor-parser/partials/section-parser.html',
+    controller: ['$log', '$scope', SpotfulSectionParserController],
+    bindings: {
+        data: "<", 
+        schema: "<", 
+        onupdate: "&",
+        label : "@",
+        description : "@"
+    }
+});
+function SpotfulSectionParserController($log,$scope) {
 
+    // Used for empty items
+    var defaultLabel = "Empty item"
     var ctrl = this;
     var itemsData = {};
     ctrl.label = '';
     ctrl.description = '';
-
+    ctrl.section = {};
+    ctrl.showSection = false ; // controls the -is-active class given to the html to hide or show the section body
+    ctrl.collapsible = false; // a flag that corresponds to the value given in the manifest , it determins if a section is collapsible or not 
     ctrl.$onChanges = function(changes) {
 
+        
         if (changes.data != undefined && ctrl.data != undefined) {
 
             for (var i in ctrl.data) {
@@ -15546,15 +15444,100 @@ function SpotfulSectionParserController($log) {
 
         }
 
+        // SCHEMA is the payload received from the manifest 
+        // schema = undefined means no new changes 
+        // ctrl.schema carries the exposed payload on the scope 
         if (changes.schema != undefined && ctrl.schema != undefined) {
+            //if there is a header , we should display it instead of just the label
+            if(ctrl.schema.header != undefined){
+                //expose the collapsible flag     
+                ctrl.collapsible = true;
 
+                handleCollapsibleSection(ctrl.schema, ctrl.data);
+            }
+            
+            
             ctrl.items = ctrl.schema.fields;
+            
             ctrl.label = ctrl.schema.label;
+            
             ctrl.description = ctrl.schema.description;
+
         }
 
     };
 
+    ctrl.toggleSection = function (){
+        
+        ctrl.showSection = !ctrl.showSection;
+
+    }
+
+    var checkLabel = function(sectionLabel,sectionThumbnail,data){
+         // if data of that retference exists 
+         if (data[sectionLabel] !== undefined && data[sectionLabel] !== "") {
+            //get the value of that key and expose it to the scope 
+            ctrl.section.sectionLabel = data[sectionLabel];
+            
+        } else if ( data[sectionThumbnail] ) {
+           
+            if (data[sectionThumbnail].title != undefined && data[sectionThumbnail].src !== undefined && data[sectionThumbnail].src !== "") {
+                ctrl.section.sectionLabel = data[sectionThumbnail].title;      
+            }else{
+                ctrl.section.sectionLabel = defaultLabel;
+            }
+            
+        } else {
+            ctrl.section.sectionLabel = defaultLabel;
+        }
+
+    }
+    var checkThumbnail = function(sectionThumbnail,sectionLabel,data){
+         // if the thumbnail is available 
+        if (data[sectionThumbnail] !== undefined && data[sectionThumbnail] !== "" && data[sectionThumbnail].src !== undefined && data[sectionThumbnail].src !== "") {
+            // and if the src of the thumbnail is available  
+            //get the value of that key and expose it to the scope 
+            ctrl.section.sectionThumbnail = data[sectionThumbnail].src;
+            // if no src available 
+        } else {
+            ctrl.section.sectionThumbnail = "";
+        }
+
+    }
+    var handleCollapsibleSection = function (item, data){
+        
+        console.log('data',data)
+        var sectionLabel = item.header.label_reference;
+        var sectionThumbnail = item.header.thumbnail_reference;
+        
+        if (data === undefined) {
+            ctrl.section.sectionThumbnail = "";
+            ctrl.section.sectionLabel = defaultLabel;
+
+            getInitial(ctrl.section.sectionLabel);
+            
+            return;
+        } 
+        
+        // if label ref is available 
+        checkLabel(sectionLabel,sectionThumbnail,data);
+        
+        // if thumbnail reference exists 
+        checkThumbnail(sectionThumbnail,sectionLabel,data); 
+
+        // Create the avatar from the label
+        getInitial(ctrl.section.sectionLabel);
+        
+    }
+
+    /**
+     * getInitial
+     * @memberOf EditorParser.SpotfulSectionParser
+     * @param  {String} name used to pull the first initial from and display instead of image
+     */
+    var getInitial = function(name) {
+        ctrl.initials = name.charAt(0).toUpperCase();
+    }
 
     /**
      * updateItem
@@ -15563,23 +15546,36 @@ function SpotfulSectionParserController($log) {
      * @param  {Object} data The data payload of the updated item.
      */
     ctrl.updateItem = function(item, data) {
-
+        
+        
+        // console.log('item : ' ,item , 'data : ', data , "ctrl.schema",ctrl.schema, "ctrl.data", ctrl.data)
         if (item == undefined || item.name == undefined) {
 
             $log.error("Item reference is missing.");
             return;
 
-        }
+        } 
 
         itemsData[item.name] = data;
 
         ctrl.onupdate({
             'data': itemsData
         });
-    };
+        
+        // console.log('itemsData : ', itemsData);
+        if(ctrl.schema.header !== undefined){
+            
+            handleCollapsibleSection(ctrl.schema, itemsData);
+
+            // Create the avatar
+            getInitial(ctrl.section.sectionLabel);
+
+        }
+    }
 }
-})();
-(function () {
+
+
+
 /**
  * This service allows you to extend parsable fields in the editor. 
  * 
@@ -15587,9 +15583,7 @@ function SpotfulSectionParserController($log) {
  * @ngdoc service
  * @memberof EditorParser
  */
-angular
-    .module('ui.spotful.editorParser')
-    .service('SpotfulEditorParser', ['$log', function($log) {
+angular.module('ui.editor-parser').service('SpotfulEditorParser', ['$log', function($log) {
 
     var self = this;
 
@@ -15729,17 +15723,12 @@ angular
     }
 
 }]);
-})();
-(function () {
-    'use strict';
 
 /**
  * SpotfulEmailField
  * @memberOf SpotfulUi
  */
-angular
-    .module('ui.spotful')
-    .directive('spotfulEmailField', ['$timeout', function($timeout) {
+angular.module('ui').directive('spotfulEmailField', ['$timeout', function($timeout) {
 
     return {
         restrict: 'E',
@@ -15757,7 +15746,7 @@ angular
 
         },
 
-        templateUrl: 'email-field/email-field.tpl.html',
+        templateUrl: 'src/email-field/partials/email-field.html',
 
         link: function(scope, element, attr) {
 
@@ -15794,30 +15783,14 @@ angular
                 scope.onupdate({
                     data: scope.data
                 });
+
             });
+
         }
+
     };
+
 }]);
-})();
-
-(function () {
-    'use strict';
-
-angular
-    .module('ui.spotful')
-    .component('spotfulImageField', {
-
-    templateUrl: 'image-field/image-field-partial.tpl.html',
-    controller: SpotfulImageFieldController,
-    bindings: {
-        data: '<',
-        schema: '<',
-        onupdate: '&'
-
-    }
-});
-
-SpotfulImageFieldController.$inject = ['$scope', '$element'];
 
 /**
  * @class SpotfulTextField
@@ -15831,38 +15804,48 @@ function SpotfulImageFieldController($scope, $element) {
 
     this.$onChanges = function() {
 
-        $element.find('input').value = ctrl.data;
+
+        // console.log('from image element onchange',ctrl.data.src );
+        if (ctrl.data !== undefined) {
+            $element.find('input').value = ctrl.data.src;
+        }
+        
 
         this.label = this.schema.Label;
-    };
+
+    }
 
     $element.find('input').on('change', function(event) {
 
-        //console.log(ctrl.data);
+        // console.log('from image element',ctrl.data.src );
 
-        ctrl.data = this.value;
+        if ( ctrl.data !== undefined ) {
+            ctrl.data.src = this.value;
+        }
 
         ctrl.updateItem();
+
     });
 
     this.updateItem = function() {
+
         ctrl.onupdate({
             data: ctrl.data
         });
-    };
+
+    }
+
 }
-})();
 
-(function () {
-    'use strict';
+angular.module('ui.editor-parser').component('spotfulImageField', {
 
-angular
-    .module('ui.spotful')
-    .component('spotfulJsonField', {
-    controller: SpotfulJsonFieldController,
+    templateUrl: 'src/image-field/partials/image-field-partial.html',
+    controller: SpotfulImageFieldController,
     bindings: {
-        data: '<',
-        onupdate: '&'
+        data: "<",
+        schema: "<",
+        onupdate: "&"
+
     }
 });
 
@@ -15878,8 +15861,8 @@ function SpotfulJsonFieldController($scope, $element) {
 
     $element.append(textarea);
 
-    textarea.style.width = '300px';
-    textarea.style.height = '300px';
+    textarea.style.width = "300px";
+    textarea.style.height = "300px";
 
 
     this.$onChanges = function(changes) {
@@ -15914,12 +15897,20 @@ function SpotfulJsonFieldController($scope, $element) {
             console.log('Could not update json.');
         }
 
-    };
-}
-})();
 
-(function () {
-    'use strict';
+    }
+
+}
+
+angular.module('ui').component('spotfulJsonField', {
+
+    controller: SpotfulJsonFieldController,
+    bindings: {
+        data: "<",
+        onupdate: "&"
+
+    }
+});
 
 /**
  * Allows for easy addition of a loading screen to any view. 
@@ -15932,11 +15923,11 @@ function SpotfulJsonFieldController($scope, $element) {
  * @ngdoc directive
  */
 
-angular.module('ui.spotful').directive('loadingScreen', ['$timeout', function($timeout) {
+angular.module('ui').directive('loadingScreen', ['$timeout', function($timeout) {
     return {
 
         restrict: 'E',
-        templateUrl: 'loading-screen/loading-screen.tpl.html',
+        templateUrl: 'src/loading-screen/loading-screen.html',
 
         scope: {
 
@@ -15987,9 +15978,9 @@ angular.module('ui.spotful').directive('loadingScreen', ['$timeout', function($t
             });
 
         }
-    };
-}]);
-})();
+    }
+
+}])
 
 /**
  * Allows you to find a google place id representing a location on google map. 
@@ -16002,12 +15993,12 @@ angular.module('ui.spotful').directive('loadingScreen', ['$timeout', function($t
  * @example <spotful-location-field data="data" label="Where do you want to go?" onupdate="parentUpdateItem(data)"></spotful-location-field>
  * @ngdoc directive
  */
-angular.module('ui.spotful').directive('spotfulLocationField', [function() {
+angular.module('ui').directive('spotfulLocationField', [function() {
     return {
 
         restrict: 'E',
         replace: true,
-        templateUrl: 'location-field/location-field.tpl.html',
+        templateUrl: 'src/location-field/partials/location-field.html',
 
         scope: {
 
@@ -16087,12 +16078,7 @@ angular.module('ui.spotful').directive('spotfulLocationField', [function() {
     }
 }]);
 
-(function () {
-    'use strict';
-
-angular
-    .module('ui.spotful')
-    .directive('spotfulMatchValidation', ['$timeout', function($timeout) {
+angular.module('ui').directive('spotfulMatchValidation', ['$timeout', function($timeout) {
     return {
         require: 'ngModel',
         link: function($scope, elem, attrs, ctrl) {
@@ -16136,142 +16122,10 @@ angular
 
             });
         }
-    };
+    }
 }]);
-})();
 
-(function () {
-    'use strict';
-
-    angular
-        .module('ui.spotful.modal')
-        .directive('spModal', spModalDirective);
-
-    function spModalDirective() {
-        return {
-            restrict: 'E',
-            templateUrl: 'modal/modal.tpl.html',
-            scope: {
-                modal: '<',
-                headingText: '@',
-                image: '@',
-                type: '@',
-                cancelText: '@',
-                submitText: '@',
-                size: '@',
-                onSubmit: '&',
-                onCancel: '&'
-            },
-            transclude: true,
-            link: function ($scope, $elem, $attrs) {
-
-                // Apply defaults
-                _applyDefaultOptions();
-
-                $scope.submit = function () {
-                    $scope.onSubmit();
-                };
-
-                $scope.cancel = function () {
-                    $scope.onCancel();
-                };
-
-                /**
-                 * Apply the default options when unspecified.
-                 * 
-                 * @private
-                 */
-                function _applyDefaultOptions() {
-                    // defaults
-                    var defaults = {
-                        headingText: '',
-                        type: 'neutral',
-                        cancelText: 'Dismiss',
-                        submitText: 'OK',
-                        size: 'sm'
-                    };
-
-                    for (var k in defaults) {
-                        // if properties were specified in the attrs, apply them
-                        // otherwise, use the defaults
-                        if ($attrs[k] && $attrs[k].length) {
-                            $scope[k] = $attrs[k];
-                        } else {
-                            $scope[k] = defaults[k];
-                        }
-                    }
-                }
-            }
-        };
-    }
-})();
-(function () {
-    /**
-     * ModalService is a service for manage modals.
-     * @memberOf SpotfulUi
-     * @ngdoc service
-     */
-    angular
-        .module('ui.spotful.modal')
-        .service('ModalService', ModalService);
-    
-    ModalService.$inject = ['$q'];
-
-    function ModalService($q) {
-        var self = this;
-
-        self.modals = [];
-
-        self.open = open;
-        self.clear = clear;
-
-        /////////////
-
-        /**
-         * Clear the modals stack.
-         * 
-         * @public
-         */
-        function clear() {
-            //  This is a very important piece.  
-            //  Angular watches break when the hashId of the variable changes 
-            //  i.e.: changing an array to a new instance of an array -- [] -- instead of emptying it via recursive splice -EB
-            self.modals.splice(0, self.modals.length); // = [];
-        }
-
-        /**
-         * Show a popup item
-         * 
-         * @public
-         * @return {Object} Deferred object that will be resolved when the submit sequence will be invoked. 
-         */
-        function open() {
-
-            // Our promise object to return
-            var modal = $q.defer();
-            
-            // TODO: to be done
-
-            var modalLength = self.modals.push(modal);
-            
-            modal.promise
-                .finally(function () {
-                    var index = self.modals.indexOf(modal);
-
-                    self.modals.splice(index, 1);
-                });
-
-            return modal;
-        }
-    }
-})();
-
-(function () {
-    'use strict';
-
-angular
-    .module('ui.spotful')
-    .directive('spotfulNumberField', ['$timeout', '$rootScope', function($timeout, $rootScope) {
+angular.module('ui').directive('spotfulNumberField', ['$timeout', '$rootScope', function($timeout, $rootScope) {
 
     return {
         restrict: 'E',
@@ -16279,20 +16133,20 @@ angular
 
         scope: {
 
-            label: '@',
-            description: '@',
-            placeholder: '@',
-            min: '@',
-            max: '@',
-            step: '@',
+            label: "@",
+            description: "@",
+            placeholder: "@",
+            min: "@",
+            max: "@",
+            step: "@",
 
-            default : '@',
+            default : "@",
 
-            data: '<',
-            onupdate: '&'
+            data: "<",
+            onupdate: "&"
         },
 
-        templateUrl: 'number-field/number-field.tpl.html',
+        templateUrl: 'src/number-field/partials/number-field.html',
 
         link: function(scope, element, attr) {
 
@@ -16358,73 +16212,78 @@ angular
         }
 
     };
+
 }]);
-})();
-(function () {
-    'use strict';
 
 /**
  * SpotfulOptionField
  * 
  */
-angular
-    .module('ui.spotful')
-    .directive('spotfulOptionField', ['$timeout', function($timeout) {
+angular.module('ui').directive('spotfulOptionField', ['$timeout', function($timeout) {
 
     return {
         restrict: 'E',
 
         scope: {
+
             data: "<",
             schema: "<",
-            label: "@",
-            options: "<",
-            onupdate: "&"
-        },
-        templateUrl: 'option-field/option-field.tpl.html',
-    };
-}]);
-})();
-(function () {
-    'use strict';
 
-angular
-    .module('ui.spotful')
-    .directive('spotfulPasswordField', [function() {
+            label: "@",
+
+            options: "<",
+
+            onupdate: "&"
+
+
+        },
+
+        templateUrl: 'src/option-field/partials/option-field.html',
+
+        link: function(scope, element, attr) {
+
+
+        }
+
+    };
+
+}]);
+
+angular.module('ui').directive('spotfulPasswordField', [function() {
 
     return {
         restrict: 'E',
         replace: true,
+
         scope: {
 
         },
 
-        templateUrl: 'password-field/password-field.tpl.html',
+        templateUrl: window.$SpotfulConfiguration.APP_URL + 'ui/password-field/password-field.html',
+
+        link: function(scope, element, attr) {
+
+        }
 
     };
 
 }]);
-})();
 
 var defaultPopup = function() {
 
     function link(scope, element, attrs) {};
 
     return {
-        restrict: 'E',
-        templateUrl: 'popup/default-popup.tpl.html',
+        restrict: "E",
+        templateUrl: 'src/popup/partials/default-popup.html',
         link: link
     }
-};
+}
 
-angular.module('ui.spotful.popup')
-    .directive('defaultPopup', defaultPopup);
-(function () {
-    'use strict';
+angular.module('ui.popup')
+    .directive("defaultPopup", defaultPopup);
 
-angular
-    .module('ui.spotful.popup')
-    .directive("editorPopupItem", ['$compile', 'PopupEditorManager', '$timeout', function($compile, PopupEditorManager, $timeout) {
+angular.module('ui.popup').directive("editorPopupItem", ['$compile', 'PopupEditorManager', '$timeout', function($compile, PopupEditorManager, $timeout) {
     /*------------------------------------------------------------------------------------------------------------------------------------*/
     /*-  The Q defer pattern is used to support our popup framework.  The 'submit' process actually initiates the  -*/
     /*-  defer's resolve method and the cancel method invokes the defer's reject method.                           -*/
@@ -16444,10 +16303,6 @@ angular
 
         link: function($scope, element, attr) {
 
-            // TODO: this should not be a watch
-            // rather, there should be an event-driven model.
-            // Moreover, this directive is just making a binding,
-            // which is redundant.
             $scope.$watch("config", function(config) {
 
                 element.html(config.content).show();
@@ -16458,19 +16313,15 @@ angular
 
         }
 
-    };
-}]);
-})();
-(function () {
-    'use strict';
+    }
 
-angular
-    .module('ui.spotful.popup')
-    .directive('popupeditor', ['$compile', 'PopupEditorManager', '$timeout', function($compile, PopupEditorManager, $timeout) {
+}]);
+
+angular.module('ui.popup').directive('popupeditor', ['$compile', 'PopupEditorManager', '$timeout', function($compile, PopupEditorManager, $timeout) {
 
     return {
         restrict: 'E',
-        templateUrl: 'popup/editor-popup.tpl.html',
+        templateUrl: 'src/popup/partials/editor-popup.html',
         scope: {},
 
         link: function(scope, element, attr) {
@@ -16481,7 +16332,7 @@ angular
             // Cancel the popup editor item  when the user clicks on cancel.
             scope.cancel = function(popupeditoritem) {
                 popupeditoritem.cancel();
-            };
+            }
 
             // Adds class to body tag stop the scrolling
             scope.$watchCollection('popupeditoritems', function() {
@@ -16491,18 +16342,98 @@ angular
                 } else {
                     $('body').removeClass('popup-open');
                 }
+
             });
 
             scope.$on('$destroy', function() {
                 $('body').removeClass('popup-open');
             });
+
         }
     };
 }]);
-})();
 
-(function () {
-    'use strict';
+angular.module('ui.popup').directive('slidepopup', ['$compile', 'SlidePopupManager', function($compile, SlidePopupManager) {
+
+    return {
+
+        restrict: 'E',
+
+        templateUrl: 'src/popup/partials/slide-popup.html',
+
+        replace: true,
+
+        scope: {},
+
+        link: function(scope, element, attr) {
+
+            scope.show = false;
+            scope.data = {};
+
+            SlidePopupManager.init(scope);
+
+            element.find('[toggle]').fadeOut("fast", "linear");
+
+            scope.$on('submit', function(event, data) {
+
+                scope.close();
+
+            });
+
+            scope.$watch('show', function(newValue, oldValue) {
+
+                if (newValue) {
+
+                    element.fadeIn("fast", "linear");
+
+                } else {
+
+                    element.fadeOut("fast", "linear");
+
+                }
+
+            });
+
+            scope.$watchCollection('content', function(newValue, oldValue) {
+
+                if (newValue) {
+
+                    $('.slide-dialog--content').empty();
+                    $('.slide-dialog--content').append(angular.element(scope.content));
+
+                    $compile($('.slide-dialog--content').contents())(scope);
+
+                    element.closest(".window").find('[toggle]').fadeOut("fast", "linear");
+                    element.closest(".slide").find('[toggle]').fadeOut("fast", "linear");
+
+                }
+
+            });
+
+            scope.cancel = function() {
+
+                scope.close();
+                scope.$emit('cancel');
+
+            };
+
+            scope.close = function() {
+
+                element.closest(".slide").find('[toggle]').fadeIn("fast", "linear");
+                element.closest(".window").find('[toggle]').fadeIn("fast", "linear");
+
+                scope.show = false;
+                scope.content = '';
+
+                $('.slide-dialog--content').empty();
+
+            };
+
+        }
+
+    }
+
+}]);
 
 /**
  * PopupEditorManager is a service for interfacing the popup interface.
@@ -16510,9 +16441,7 @@ angular
  * @namespace PopupEditorManager
  * @ngdoc service
  */
-angular
-    .module('ui.spotful.popup')
-    .service('PopupEditorManager', ['$timeout', '$q', function($timeout, $q) {
+angular.module('ui.popup').service('PopupEditorManager', ['$timeout', '$q', function($timeout, $q) {
 
     var self = this;
 
@@ -16524,7 +16453,7 @@ angular
         //  Angular watches break when the hashId of the variable changes 
         //  i.e.: changing an array to a new instance of an array -- [] -- instead of emptying it via recursive splice -EB
         this.popupeditoritems.splice(0, this.popupeditoritems.length); // = [];
-    };
+    }
 
 
     /**
@@ -16544,10 +16473,12 @@ angular
      * @return {Object}        returns a promise pattern that will be resolved when the submit sequence will be invoked. 
      */
     this.show = function(config, data) {
-        console.log('called popup show');
-        config = config || {};
 
         var deferred = $q.defer();
+
+        if (config == undefined) {
+            config = {};
+        }
 
         if (config.showModalCloseControl == undefined) {
 
@@ -16586,16 +16517,81 @@ angular
             });
 
         }, 0);
-        
-                    console.trace();
 
         return deferred.promise;
     };
-}]);
-})();
 
-(function () {
-    'use strict';
+
+}]);
+
+angular.module('ui.popup').service('SlidePopupManager', [function() {
+
+    var popupStack = [];
+
+    this.init = function(popup) {
+
+        popupStack[popup.$parent.$id] = popup;
+
+    };
+
+    this.cancel = function(popup) {
+
+        var depth = 0;
+
+        if (popup != undefined && popup != null && popup.$id != undefined) {
+
+            // Try to identify the popup scope.
+            while (popup != undefined && popupStack[popup.$id] == undefined) {
+
+                popup = popup.$parent;
+                depth += 1;
+
+                // Bail if we have not found the popup scope and we've reached some cutoff.
+                if (depth == 10) {
+                    break;
+                }
+
+            }
+
+            if (popup != undefined && popupStack[popup.$id] != undefined) {
+
+                popupStack[popup.$id].cancel();
+
+            }
+
+        }
+
+    }
+
+    this.show = function(content, popup) {
+
+        var depth = 0;
+
+        if (popup != undefined) {
+
+            while (popupStack[popup.$id] == undefined) {
+
+                popup = popup.$parent;
+                depth += 1;
+
+                // Bail if we have not found the parent and we've reached some cutoff.
+                if (depth == 10) {
+                    break;
+                }
+
+            }
+
+            popupStack[popup.$id].show = true;
+            popupStack[popup.$id].content = content;
+
+            return popupStack[popup.$id];
+
+        }
+
+    }
+
+}]);
+
 /**
  * The range field allows you to interface a given number with a range and steps.
  * 
@@ -16612,7 +16608,7 @@ angular
  * @example <spotful-range-field data="data" label="Where do you want to go?" onupdate="parentUpdateItem(data)"></spotful-range-field>
  * @ngdoc directive
  */
-angular.module('ui.spotful.rangeField').directive('spotfulRangeField', [function() {
+angular.module('ui').directive('spotfulRangeField', [function() {
 
     return {
         restrict: 'E',
@@ -16631,7 +16627,7 @@ angular.module('ui.spotful.rangeField').directive('spotfulRangeField', [function
 
         },
 
-        templateUrl: 'range-field/range-field.tpl.html',
+        templateUrl: 'src/range-field/partials/range-field.html',
 
         link: function(scope, element, attr) {
 
@@ -16660,10 +16656,7 @@ angular.module('ui.spotful.rangeField').directive('spotfulRangeField', [function
     };
 
 }]);
-})();
 
-(function () {
-    'use strict';
 /**
  * Allows you to enter and format rich text into an HTML editor.  Trump tower not included.
  * This richtext is a wrapper of textangular. Look up documentation for more information  http://textangular.com/
@@ -16677,12 +16670,10 @@ angular.module('ui.spotful.rangeField').directive('spotfulRangeField', [function
  * 
  * @ngdoc directive
  */
-angular
-    .module('ui.spotful.richtext')
-    .directive('spotfulRichtextField', [function() {
+angular.module('ui.richtext').directive('spotfulRichtextField', [function() {
     return {
         restrict: 'E',
-        templateUrl: 'richtext-field/richtext-field.tpl.html',
+        templateUrl: 'src/richtext-field/partials/richtext-field.html',
         replace: true,
 
         scope: {
@@ -16733,11 +16724,6 @@ angular
         }
     };
 }]);
-})();
-
-
-(function () {
-    'use strict';
 
 /**
  * The range field allows you to interface a given number with a range and steps.
@@ -16754,13 +16740,11 @@ angular
  * @ngdoc directive
  */
 
-angular
-    .module('ui.spotful.searchField')
-    .directive('spotfulSearchField', ['$timeout', function ($timeout) {
+angular.module('ui').directive('spotfulSearchField', ['$timeout', function($timeout) {
     return {
         restrict: 'E',
 
-        templateUrl: 'search-field/search-field.tpl.html',
+        templateUrl: 'src/search-field/partials/search-field.html',
 
         scope: {
             label: "@",
@@ -16830,18 +16814,15 @@ angular
         }
     };
 }]);
-})();
 
 (function() {
     'use strict';
 
-    angular
-        .module('ui.spotful')
-        .directive('searchlink', ['MediaService', '$timeout', function(MediaService, $timeout) {
+    angular.module('ui').directive('searchlink', ['MediaService', '$timeout', function(MediaService, $timeout) {
         return {
             restrict: 'E',
 
-            templateUrl: 'search-link/search-link.tpl.html',
+            templateUrl: 'src/search-link/partials/search-link.html',
 
             scope: {
                 data: "=",
@@ -16936,9 +16917,7 @@ angular
 (function() {
     'use strict';
 
-    angular
-        .module('ui.spotful')
-        .service('LinkService', ['$q', 'YoutubeService', 'VimeoService', 'MediaService', function($q, YoutubeService, VimeoService, MediaService) {
+    angular.module('ui').service('LinkService', ['$q', 'YoutubeService', 'VimeoService', 'MediaService', function($q, YoutubeService, VimeoService, MediaService) {
 
         this.parseUrl = function(url, type) {
 
@@ -16981,9 +16960,6 @@ angular
     }]);
 })();
 
-(function () {
-    'use strict';
-
 /**
  * Generates a select list of item provided by the options parameter. 
  * @memberOf SpotfulUi
@@ -16997,21 +16973,19 @@ angular
  * @example <spotful-select-field data="data" label="label" options="options" onupdate="fn()"></spotful-select-field>
  * @ngdoc directive
  */
-angular
-    .module('ui.spotful')
-    .directive('spotfulSelectField', [function() {
+angular.module('ui').directive('spotfulSelectField', ['$timeout', function($timeout) {
     return {
         restrict: 'E',
-        templateUrl: 'select-field/select-field.tpl.html',
+        templateUrl: 'src/select-field/partials/select-field.html',
         scope: {
 
-            data: '<',
-            default : '@',
-            label: '@',
-            description: '@',
-            placeholder: '@',
-            options: '<',
-            onupdate: '&'
+            data: "<",
+            default : "@",
+            label: "@",
+            description: "@",
+            placeholder: "@",
+            options: "<",
+            onupdate: "&"
 
         },
 
@@ -17038,13 +17012,11 @@ angular
         }
     };
 }]);
-})();
+
 (function() {
     'use strict';
 
-    angular
-        .module('ui.spotful')
-        .directive('uiSlidetabs', [function() {
+    angular.module('ui').directive('uiSlidetabs', [function() {
         return {
             restrict: 'A',
 
@@ -17162,9 +17134,6 @@ jQuery.extend( jQuery.easing,
 	}
 });*/
 
-(function () {
-    'use strict';
-
 /**
  * Generates a switch that will toggle a boolean value to true or false 
  * @memberOf SpotfulUi
@@ -17175,11 +17144,14 @@ jQuery.extend( jQuery.easing,
  * @example <spotful-switch-field data="data" label="label" onupdate="fn()"></spotful-switch-field>
  * @ngdoc directive
  */
-angular.module('ui.spotful').directive('spotfulSwitchField', [function() {
+angular.module('ui').directive('spotfulSwitchField', [function() {
 
     return {
+
         restrict: 'E',
+
         scope: {
+
             label: "@",
             default : "@",
             description: "@",
@@ -17188,12 +17160,12 @@ angular.module('ui.spotful').directive('spotfulSwitchField', [function() {
             data: "<"
         },
 
-        templateUrl: 'switch-field/switch-field.tpl.html',
+        templateUrl: 'src/switch-field/partials/switch-field.html',
 
         link: function(scope, element, attr) {
 
             //We check if there is a default value.
-            if (scope.data == undefined && scope.default != undefined) {
+            if(scope.data == undefined && scope.default != undefined) {
 
                 scope.data = scope.default == 'true';
 
@@ -17210,14 +17182,13 @@ angular.module('ui.spotful').directive('spotfulSwitchField', [function() {
                     data: scope.data
                 });
 
-            };
-        }
-    };
-}]);
-})();
+            }
 
-(function () {
-    'use strict';
+        }
+
+    }
+
+}]);
 
 /**
  * Simple textfield for interfacing text.
@@ -17231,9 +17202,7 @@ angular.module('ui.spotful').directive('spotfulSwitchField', [function() {
  * @example <spotful-text-field data="data" label="Murica" onupdate="parentUpdateItem(data)"></spotful-text-field>
  * @ngdoc directive
  */
-angular
-    .module('ui.spotful')
-    .directive('spotfulTextField', ['$timeout', function($timeout) {
+angular.module('ui').directive('spotfulTextField', ['$timeout', function($timeout) {
 
     return {
         restrict: 'E',
@@ -17252,7 +17221,7 @@ angular
 
         },
 
-        templateUrl: 'text-field/text-field.tpl.html',
+        templateUrl: 'src/text-field/partials/text-field.html',
 
         link: function(scope, element, attr) {
 
@@ -17311,17 +17280,16 @@ angular
                 }
 
             });
+
+
+
         }
+
     };
+
 }]);
-})();
 
-(function () {
-    'use strict';
-
-angular
-    .module('ui.spotful')
-    .directive('spotfulUrlField', [function() {
+angular.module('ui').directive('spotfulUrlField', ['$timeout', function($timeout) {
 
     return {
         restrict: 'E',
@@ -17337,7 +17305,7 @@ angular
 
         },
 
-        templateUrl: 'url-field/url-field.tpl.html',
+        templateUrl: 'src/url-field/partials/url-field.html',
 
         link: function(scope, element, attr) {
             
@@ -17374,9 +17342,12 @@ angular
                 });
 
             });
+
+
         }
+
     };
+
 }]);
-})();
 
 //# sourceMappingURL=spotful-ui.js.map
